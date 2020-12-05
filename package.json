@@ -1,0 +1,26 @@
+{
+  "name": "eshop-watcher",
+  "version": "0.0.1",
+  "description": "Watch regional Nintendo eshop for good deals",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "lint": "semistandard",
+    "lint:fix": "semistandard --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/szkrd/eshop-watcher.git"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "4.3.4",
+    "semistandard": "*"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  }
+}

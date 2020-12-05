@@ -1,0 +1,10 @@
+{
+  // semistandard (or standard) autoformatter
+  // https://marketplace.visualstudio.com/items?itemName=chenxsan.vscode-standardjs
+  "javascript.validate.enable": false,
+  "standard.enable": true,
+  "standard.autoFixOnSave": true,
+  "standard.validate": ["javascript"],
+  "standard.engine": "semistandard",
+  "standard.usePackageJson": true
+}
