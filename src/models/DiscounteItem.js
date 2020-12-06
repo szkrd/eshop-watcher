@@ -3,7 +3,8 @@ const prettyDate = require('../vendor/prettyDate');
 
 module.exports = class DiscountedItem {
   constructor (rawObj) {
-    this.name = rawObj.formal_name;
+    this.id = String(rawObj.id);
+    this.name = rawObj.formal_name.replace(/\s+/g, ' ');
     this.banner = rawObj.hero_banner_url;
     this.releaseDate = new Date(rawObj.release_date_on_eshop); // orig: 2020-10-10
     this.releaseDatePretty = prettyDate(new Date(rawObj.release_date_on_eshop));

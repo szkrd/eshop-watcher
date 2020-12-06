@@ -6,6 +6,10 @@ try {
 module.exports = Object.assign({
   storeCountryCode: 'HU',
   storeLangCode: 'hu',
+  // no, it's not possible to get a direct, regional store url to a game
+  // but since I'd like to have a link to "something", at least link to a search engine
+  _moreInfoSearchText_TODO: 'switch {ITEM_NAME}',
+  _moreInfoUrl_TODO: 'https://www.google.com/search?q={SEARCH_TEXT}',
   // a mapped url list can be found at:
   // https://gist.github.com/Shy07/822eff655ec8da2717f269bc21c65976
   salesApiUrl: 'https://ec.nintendo.com/api/{COUNTRY}/en/search/sales?count={COUNT}&offset={OFFSET}',
