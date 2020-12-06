@@ -14,5 +14,8 @@ node_modules/
 .env.test
 .vscode
 .idea
-
+dist
+!dist/.gitkeep
+db
+!db/.gitkeep
 config.json

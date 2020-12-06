@@ -12,11 +12,11 @@ module.exports = Object.assign({
   // so far the maximum seems to be 30
   salesApiCount: 30,
   priceApiUrl: 'https://api.ec.nintendo.com/v1/price?country={COUNTRY}&ids={IDS}&lang={LANG}',
-  // TODO check max
-  priceApiMaxIdCount: 5,
-  // api responses will be stored in the _db_ folder
-  // this is the ttl in days
-  responseCacheTtl: 1,
+  // it happily served 50 last time I checked
+  priceApiMaxIdCount: 50,
+  // api responses will be stored in the _db_ folder for the current day,
+  // number of days/folders kept around
+  numberOfDirsKeptInDb: 5,
   // any game that's original price is above this value and it pops
   // up in the deals list will be deemed "interesting"
   minimumOrigPriceOfInterestingItems: 20
