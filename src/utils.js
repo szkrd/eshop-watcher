@@ -1,5 +1,16 @@
+const path = require('path');
 const fs = require('fs').promises;
+const Handlebars = require('handlebars');
 const axios = require('axios').default;
+const PROJECT_ROOT_RELATIVE_PATH = '../';
+
+function escapeRegExp (string) {
+  return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+}
+
+function absolutePathTo (fn = '') {
+  return path.normalize(path.join(__dirname, PROJECT_ROOT_RELATIVE_PATH, fn));
+}
 
 async function fileExists (fn) {
   try {
@@ -35,9 +46,22 @@ async function getUrlOrReadFile (url = '', fn = '') {
   return response.data;
 }
 
+const _hbsTemplates = {};
+async function renderHbs (fn = '', data = {}) {
+  if (_hbsTemplates[fn]) {
+    return _hbsTemplates[fn](data);
+  }
+  const text = await fs.readFile(fn, 'utf8');
+  const tpl = _hbsTemplates[fn] = Handlebars.compile(text);
+  return tpl(data);
+}
+
 module.exports = {
   fileExists,
   writeJsonFile,
   writeJsonFileIfNew,
-  getUrlOrReadFile
+  getUrlOrReadFile,
+  escapeRegExp,
+  absolutePathTo,
+  renderHbs
 };
