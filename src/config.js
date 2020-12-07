@@ -26,11 +26,14 @@ module.exports = Object.assign({
   numberOfDirsKeptInDb: 5,
   // any game that's original price is above this value and it pops
   // up in the deals list will be deemed "interesting"
-  minimumOrigPriceOfInterestingItems: 20,
+  minimumOrigPriceOfInterestingItems: 25,
   // mark interesting items that are below this value
   mustBuyInterestingItemBelowPrice: 10,
   // I'm not buying invisible software
   ignoreUnreleased: true,
+  // because 9.99 is cheap and stupid
+  roundDisplayPrice: true,
+  roundPriceFormat: '{VALUE}{CURRENCY}',
   // use string or regex, matcher is case insensitive, whitespaces are normalized
   // wishliste items will always be above the interesting items
   wishList: [

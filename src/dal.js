@@ -90,7 +90,7 @@ async function getSales () {
   });
   await writeJsonFileIfNew(`${dbDir}/sales-normalized.json`, salesItems);
   console.info('sales has been hydrated with price');
-  return salesItems;
+  return { items: salesItems, runDate: date, dbDir };
 }
 
 module.exports = {

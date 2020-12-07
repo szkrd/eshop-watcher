@@ -1,10 +1,11 @@
 const config = require('../config');
-const { formatDate, toHash } = require('../utils');
+const { formatDate, toHash, roundPrice } = require('../utils');
 const prettyDate = require('../vendor/prettyDate');
 
 module.exports = class DiscountedItem {
   constructor (rawObj) {
     this.id = String(rawObj.id);
+    this.old = false;
     this.name = rawObj.formal_name.replace(/\s+/g, ' ');
     this.banner = rawObj.hero_banner_url;
     this.releaseDate = new Date(rawObj.release_date_on_eshop); // orig: 2020-10-10
@@ -17,17 +18,20 @@ module.exports = class DiscountedItem {
     }, []);
     this.interesting = rawObj.price.regular_price.raw_value > config.minimumOrigPriceOfInterestingItems;
     this.mustBuy = rawObj.price.discount_price.raw_value <= config.mustBuyInterestingItemBelowPrice;
+    this.bargainBin = rawObj.price.discount_price.raw_value <= config.mustBuyInterestingItemBelowPrice / 2;
 
     const priceRegular = (rawObj.price || {}).regular_price;
     const priceDiscounted = (rawObj.price || {}).discount_price;
     this.price = {
       regular: {
         amount: priceRegular.amount,
+        amountFormatted: config.roundDisplayPrice ? roundPrice(priceRegular.raw_value, priceRegular.currency) : priceRegular.amount,
         currency: priceRegular.currency,
         value: parseFloat(priceRegular.raw_value)
       },
       discounted: {
         amount: priceDiscounted.amount,
+        amountFormatted: config.roundDisplayPrice ? roundPrice(priceDiscounted.raw_value, priceDiscounted.currency) : priceDiscounted.amount,
         currency: priceDiscounted.currency,
         value: parseFloat(priceDiscounted.raw_value),
         startDate: new Date(priceDiscounted.start_datetime),
