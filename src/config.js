@@ -6,10 +6,13 @@ try {
 module.exports = Object.assign({
   storeCountryCode: 'HU',
   storeLangCode: 'hu',
+  // there is Intl date format, but I want localized date in the email;
+  // the only supported template vars are Y (2020), D (01), M (01)
+  dateFormat: 'Y. M. D.',
   // no, it's not possible to get a direct, regional store url to a game
   // but since I'd like to have a link to "something", at least link to a search engine
-  _moreInfoSearchText_TODO: 'switch {ITEM_NAME}',
-  _moreInfoUrl_TODO: 'https://www.google.com/search?q={SEARCH_TEXT}',
+  moreInfoSearchText: 'switch "{ITEM_NAME}"',
+  moreInfoUrl: 'https://www.google.com/search?q={SEARCH_TEXT}',
   // a mapped url list can be found at:
   // https://gist.github.com/Shy07/822eff655ec8da2717f269bc21c65976
   salesApiUrl: 'https://ec.nintendo.com/api/{COUNTRY}/en/search/sales?count={COUNT}&offset={OFFSET}',
@@ -26,11 +29,14 @@ module.exports = Object.assign({
   minimumOrigPriceOfInterestingItems: 20,
   // mark interesting items that are below this value
   mustBuyInterestingItemBelowPrice: 10,
+  // I'm not buying invisible software
+  ignoreUnreleased: true,
   // use string or regex, matcher is case insensitive, whitespaces are normalized
   // wishliste items will always be above the interesting items
   wishList: [
-    'the legend of zelda: breath of the wild',
     'friends of mineral town',
+    /Legend of Zelda™?: Breath of the Wild/,
+    /^mega\s?man/,
     /^indie/
   ]
 }, userConfig);

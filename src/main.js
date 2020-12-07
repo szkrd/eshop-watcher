@@ -5,7 +5,10 @@ const DiscountedItem = require('./models/DiscounteItem');
 
 module.exports = async function () {
   const sales = await getSales();
-  const discountedItems = sales.map(item => new DiscountedItem(item));
+  let discountedItems = sales.map(item => new DiscountedItem(item));
+  if (config.ignoreUnreleased) {
+    discountedItems = discountedItems.filter(item => !item.notYetReleased);
+  }
 
   // get wished items
   const wishList = config.wishList;
@@ -19,13 +22,13 @@ module.exports = async function () {
       });
       return matches;
     });
+  const wishListedItemIds = wishListedItems.map(item => item.id);
 
   // get interesting items
   const interestingItems = discountedItems
     .filter(item => item.interesting)
+    .filter(item => !wishListedItemIds.includes(item.id))
     .sort((a, b) => a.name.localeCompare(b.name));
-    // const icon = parseFloat(item.price.discount_price.raw_value) < 10 ? '!' : '-';
-    // console.info(`${icon} ${item.formal_name}: ${item.price.regular_price.amount} -> ${item.price.discount_price.amount}`);
 
   // TODO: render template
   console.log(wishListedItems);

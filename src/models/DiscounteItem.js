@@ -1,4 +1,5 @@
 const config = require('../config');
+const { formatDate, toHash } = require('../utils');
 const prettyDate = require('../vendor/prettyDate');
 
 module.exports = class DiscountedItem {
@@ -7,7 +8,8 @@ module.exports = class DiscountedItem {
     this.name = rawObj.formal_name.replace(/\s+/g, ' ');
     this.banner = rawObj.hero_banner_url;
     this.releaseDate = new Date(rawObj.release_date_on_eshop); // orig: 2020-10-10
-    this.releaseDatePretty = prettyDate(new Date(rawObj.release_date_on_eshop));
+    this.releaseDateFormatted = formatDate(rawObj.release_date_on_eshop, config.dateFormat);
+    this.releaseDatePretty = prettyDate(new Date(rawObj.release_date_on_eshop)); // in an email it may look "old"
     this.notYetReleased = new Date(rawObj.release_date_on_eshop) > new Date();
     this.screenshots = (rawObj.screenshots || []).reduce((acc, item) => { // array of urls
       item.images.forEach(img => acc.push(img.url));
@@ -29,11 +31,30 @@ module.exports = class DiscountedItem {
         currency: priceDiscounted.currency,
         value: parseFloat(priceDiscounted.raw_value),
         startDate: new Date(priceDiscounted.start_datetime),
+        startDateFormatted: formatDate(new Date(priceDiscounted.start_datetime), config.dateFormat),
         startDatePretty: prettyDate(new Date(priceDiscounted.start_datetime)),
         endDate: new Date(priceDiscounted.end_datetime),
+        endDateFormatted: formatDate(new Date(priceDiscounted.end_datetime), config.dateFormat),
         endDatePretty: prettyDate(new Date(priceDiscounted.end_datetime))
       }
     };
+    this.uid = this.getUid();
+    this.moreInfoUrl = config.moreInfoUrl
+      .replace(/\{SEARCH_TEXT}/g, encodeURIComponent(config.moreInfoSearchText.replace(/\{ITEM_NAME}/g, this.name)));
+  }
+
+  getUid () {
+    // if these are not changed, I'm not going to resend this item as a suggestion
+    return toHash([
+      this.id,
+      this.name,
+      this.notYetReleased,
+      this.interesting,
+      this.mustBuy,
+      this.price.regular.amount,
+      this.price.discounted.amount,
+      this.price.discounted.endDate * 1
+    ].join(''));
   }
 
   asObject () {

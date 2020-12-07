@@ -1,11 +1,26 @@
+const crypto = require('crypto');
 const path = require('path');
 const fs = require('fs').promises;
 const Handlebars = require('handlebars');
 const axios = require('axios').default;
 const PROJECT_ROOT_RELATIVE_PATH = '../';
 
-function escapeRegExp (string) {
-  return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+function escapeRegExp (text = '') {
+  return text.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+}
+
+function toHash (text = '') {
+  const shasum = crypto.createHash('sha1'); // yes, it is broken
+  shasum.update(text);
+  return shasum.digest('hex');
+}
+
+function formatDate (date = 0, formatString = 'M/D/Y') {
+  date = date instanceof Date ? date : new Date(date);
+  return formatString
+    .replace(/Y+/gi, date.getFullYear())
+    .replace(/M+/gi, String(date.getMonth() + 1).padStart(2, '0'))
+    .replace(/D+/gi, String(date.getDate() + 1).padStart(2, '0'));
 }
 
 function absolutePathTo (fn = '') {
@@ -57,11 +72,13 @@ async function renderHbs (fn = '', data = {}) {
 }
 
 module.exports = {
-  fileExists,
-  writeJsonFile,
-  writeJsonFileIfNew,
-  getUrlOrReadFile,
-  escapeRegExp,
   absolutePathTo,
-  renderHbs
+  escapeRegExp,
+  fileExists,
+  formatDate,
+  getUrlOrReadFile,
+  renderHbs,
+  toHash,
+  writeJsonFile,
+  writeJsonFileIfNew
 };
