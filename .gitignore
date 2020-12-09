@@ -18,4 +18,4 @@ dist
 !dist/.gitkeep
 db
 !db/.gitkeep
-config.json
+config.user.json

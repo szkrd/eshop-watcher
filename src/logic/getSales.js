@@ -1,7 +1,7 @@
-const path = require('path');
 const fs = require('fs').promises;
-const config = require('./config');
-const { fileExists, writeJsonFileIfNew, getUrlOrReadFile } = require('./utils');
+const config = require('../config');
+const { fileExists, writeJsonFileIfNew, absolutePathTo } = require('../utils/file');
+const { getUrlOrReadFile } = require('../utils/misc');
 
 function getSalesUrl (offset = 0) {
   return config.salesApiUrl
@@ -27,7 +27,7 @@ function getPriceFileName (offset = 0) {
 
 async function getSales () {
   const date = new Date().toISOString().slice(0, 19).replace(/T.*/, '');
-  const dbDir = path.normalize(path.join(__dirname, `../db/${date}`));
+  const dbDir = absolutePathTo(`db/${date}`);
   const dbDirReady = await fileExists(dbDir);
   if (!dbDirReady) {
     console.info(`creating db dir ${date}`);
@@ -93,6 +93,4 @@ async function getSales () {
   return { items: salesItems, runDate: date, dbDir };
 }
 
-module.exports = {
-  getSales
-};
+module.exports = getSales;

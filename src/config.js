@@ -34,12 +34,20 @@ module.exports = Object.assign({
   // because 9.99 is cheap and stupid
   roundDisplayPrice: true,
   roundPriceFormat: '{VALUE}{CURRENCY}',
-  // use string or regex, matcher is case insensitive, whitespaces are normalized
-  // wishliste items will always be above the interesting items
+  // use string or regex, matcher is case insensitive, whitespaces are normalized;
+  // wishlist items will always be above the interesting items;
+  // wishlist items will never be marked old, it's up to you to remove them from this config
   wishList: [
     'friends of mineral town',
     /Legend of Zelda™?: Breath of the Wild/,
     /^mega\s?man/,
     /^indie/
-  ]
+  ],
+  // if launched with the --serve param, then a static server will be instanciated here
+  listenHost: '127.0.0.1',
+  listenPort: 8080,
+  sendGridApiKey: '',
+  emailFrom: 'your@email.com',
+  // if set to falsy, then it will fallback to the from address
+  emailTo: 'John Doe <foobar@mail.com>'
 }, userConfig);

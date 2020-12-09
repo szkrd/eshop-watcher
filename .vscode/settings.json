@@ -6,5 +6,6 @@
   "standard.autoFixOnSave": true,
   "standard.validate": ["javascript"],
   "standard.engine": "semistandard",
-  "standard.usePackageJson": true
+  "standard.usePackageJson": true,
+  "workbench.editor.limit.value": 25
 }

@@ -1,10 +1,9 @@
 const crypto = require('crypto');
-const path = require('path');
 const fs = require('fs').promises;
 const Handlebars = require('handlebars');
-const config = require('./config');
+const config = require('../config');
+const { fileExists } = require('./file');
 const axios = require('axios').default;
-const PROJECT_ROOT_RELATIVE_PATH = '../';
 
 function escapeRegExp (text = '') {
   return text.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
@@ -16,50 +15,11 @@ function toHash (text = '') {
   return shasum.digest('hex');
 }
 
-function formatDate (date = 0, formatString = 'M/D/Y') {
-  date = date instanceof Date ? date : new Date(date);
-  return formatString
-    .replace(/Y+/gi, date.getFullYear())
-    .replace(/M+/gi, String(date.getMonth() + 1).padStart(2, '0'))
-    .replace(/D+/gi, String(date.getDate() + 1).padStart(2, '0'));
-}
-
-function getShortDate () {
-  return new Date().toISOString().slice(0, 19).replace(/T.*/, '');
-}
-
 function roundPrice (value = 0, currency = '') {
   const currencies = { EUR: '€', USD: '$', YEN: '¥' };
   return config.roundPriceFormat
     .replace(/\{VALUE}/gi, Math.round(parseFloat(value)))
     .replace(/\{CURRENCY}/gi, currencies[currency.toUpperCase()] || currency);
-}
-
-function absolutePathTo (fn = '') {
-  return path.normalize(path.join(__dirname, PROJECT_ROOT_RELATIVE_PATH, fn));
-}
-
-async function fileExists (fn) {
-  try {
-    await fs.stat(fn);
-    return true;
-  } catch (err) {
-    if (err.code !== 'ENOENT') {
-      throw err;
-    }
-  }
-  return false;
-}
-
-async function writeJsonFile (fn = '', obj = {}) {
-  return fs.writeFile(fn, JSON.stringify(obj, null, 2), 'utf8');
-}
-
-async function writeJsonFileIfNew (fn = '', obj = {}) {
-  const exists = await fileExists(fn);
-  if (!exists) {
-    return writeJsonFile(fn, obj);
-  }
 }
 
 async function getUrlOrReadFile (url = '', fn = '') {
@@ -86,15 +46,9 @@ async function renderHbs (fn = '', data = {}, targetFn = '') {
 }
 
 module.exports = {
-  absolutePathTo,
   escapeRegExp,
-  fileExists,
-  formatDate,
-  getShortDate,
   getUrlOrReadFile,
   renderHbs,
   roundPrice,
-  toHash,
-  writeJsonFile,
-  writeJsonFileIfNew
+  toHash
 };

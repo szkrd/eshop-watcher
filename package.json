@@ -25,6 +25,9 @@
   },
   "dependencies": {
     "axios": "0.21.0",
-    "handlebars": "4.7.6"
+    "handlebars": "4.7.6",
+    "nodemailer": "6.4.16",
+    "nodemailer-sendgrid": "1.0.3",
+    "serve": "11.3.2"
   }
 }

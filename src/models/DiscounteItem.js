@@ -1,5 +1,6 @@
 const config = require('../config');
-const { formatDate, toHash, roundPrice } = require('../utils');
+const { formatDate } = require('../utils/date');
+const { toHash, roundPrice } = require('../utils/misc');
 const prettyDate = require('../vendor/prettyDate');
 
 module.exports = class DiscountedItem {

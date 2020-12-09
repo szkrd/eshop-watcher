@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>top eshop deals</title>
+  <title>top eshop deals: ❤️ {{wishListedItems.length}} / 👁️ {{notOldInterestingCount}} ({{interestingItems.length}})</title>
   {{!-- gmail supports basic styling in style tags: https://developers.google.com/gmail/design/css --}}
   <style>
     body { margin: 0; padding: 0; background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAKUlEQVQImWO4fufYfxiev3v5fwZkzvU7xyACMM71O8f+MyBzrt859h8AG4k1oSgxi8kAAAAASUVORK5CYII=) repeat; }
@@ -19,12 +19,12 @@
     .subTitleCell { background-color: #A1A091; }
     .textCell { padding: 0 5px 0 5px; }
     .mustBuyCell { background-color: #F2E3DA; }
-    .bargainBin { position: relative; left: -10px; z-index: 1; }
+    .buyMe { font-weight: bold; display: inline-block; padding: 2px 5px; background-color: rgba(255,255,255,.5); border-radius: 50%; }
     .wishListIcon { background-color: #ea97ad; box-shadow: inset 0 0 6px rgba(0, 0, 0, .5); vertical-align: middle; }
     .interestingItemIcon { background-color: #4e8d7c; box-shadow: inset 0 0 6px rgba(0, 0, 0, .5); vertical-align: middle; }
-    .priceDiscounted { font-weight: bold; }
-    .endDate, .endDateFormatted, .priceRegular { opacity: .5; }
-    tr.old td { opacity: .3; }
+    .priceDiscounted { font-weight: bold; display: inline-block; padding-right: 10px; }
+    .endDate, .endDateFormatted, .priceRegular, .itemSum { opacity: .5; }
+    tr.old td { opacity: .2; }
     tr.old .wishListIcon, tr.old .interestingItemIcon, tr.old img { mix-blend-mode: luminosity; }
   </style>
 </head>
@@ -38,8 +38,8 @@
         <span class="priceRegular">{{price.regular.amountFormatted}}</span>
         ⇢
         <span class="priceDiscounted">{{price.discounted.amountFormatted}}</span>
-        {{#if mustBuy}}<span class="mustBuy">💸</span>{{/if}}
-        {{#if bargainBin}}<span class="bargainBin">💸</span>{{/if}}
+        {{#if mustBuy}}<span class="buyMe">$</span>{{/if}}
+        {{#if bargainBin}}<span class="buyMe">$</span>{{/if}}
       </p>
       <p class="endDate">
         until {{price.discounted.endDatePretty}}
@@ -65,10 +65,19 @@
     {{#if interestingItems.length}}
       <tbody>
         <tr>
-          <td colspan="3" class="subTitleCell"><h2>interesting</h2></td>
+          <td colspan="3" class="subTitleCell">
+            {{#if notOldInterestingCount}}
+              <h2>
+                interesting
+                <span class="itemSum">({{notOldInterestingCount}})</span>
+              </h2>
+            {{else}}
+              <h2>nothing interesting since last time</h2>
+            {{/if}}
+          </td>
         </tr>
         {{#each interestingItems}}
-          <tr>
+          <tr class="{{#if old}}old{{/if}}">
             <td class="interestingItemIcon">👁️</td>
             {{> renderItem}}
           </tr>
