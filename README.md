@@ -12,7 +12,7 @@ so in order to avoid bombing the API, the calls are cached on the disk for at le
 
 1. clone repository, `cd eshop-watcher`
 2. `npm i`
-3. `cp src/config.js ./config.user.json`, and **edit the file**
+3. `echo "module.exports = {};" > ./config.user.js`, and edit the file
 4. `node .`
 
 ## configuration

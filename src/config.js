@@ -1,7 +1,6 @@
 let userConfig = {};
-try {
-  userConfig = require('../config.user.json');
-} catch (err) {}
+try { userConfig = require('../config.user.json'); } catch (err) {}
+try { userConfig = require('../config.user.js'); } catch (err) {}
 
 module.exports = Object.assign({
   storeCountryCode: 'HU',
@@ -36,11 +35,13 @@ module.exports = Object.assign({
   roundDisplayPrice: true,
   roundPriceFormat: '{VALUE}{CURRENCY}',
   // wishlist
-  // - use string or regex, matcher is case insensitive, whitespaces are normalized;
+  // - use string or regex, matcher is case insensitive, whitespaces are normalized (in the name);
+  // - use array of strings for substring matching (AND)
   // - wishlist items will always be above the interesting items;
   // - wishlist items will never be marked old, it's up to you to remove them from this config
   wishList: [
     'friends of mineral town',
+    ['hero', 'land'],
     /Legend of Zelda™?: Breath of the Wild/,
     /^mega\s?man/,
     /^indie/

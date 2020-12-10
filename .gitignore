@@ -19,3 +19,4 @@ dist
 db
 !db/.gitkeep
 config.user.json
+config.user.js

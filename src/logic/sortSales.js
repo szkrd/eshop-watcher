@@ -15,9 +15,15 @@ module.exports = async function sortSales (sales = []) {
     .filter(item => {
       let matches = false;
       wishList.forEach(rule => {
-        const rex = rule instanceof RegExp ? new RegExp(rule, 'i') : new RegExp(escapeRegExp(String(rule)), 'i');
         if (matches) return;
-        if (rex.test(item.name)) matches = true;
+        const strArrMatcher = Array.isArray(rule) && rule.every(text => typeof text === 'string');
+        const rexMatcher = rule instanceof RegExp || typeof rule === 'string';
+        if (strArrMatcher) {
+          if (rule.every(substr => item.name.toLowerCase().includes(substr))) matches = true;
+        } else if (rexMatcher) {
+          const rex = rule instanceof RegExp ? new RegExp(rule, 'i') : new RegExp(escapeRegExp(String(rule)), 'i');
+          if (rex.test(item.name)) matches = true;
+        }
       });
       return matches;
     });
