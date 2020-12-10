@@ -5,6 +5,16 @@ const config = require('../config');
 const { fileExists } = require('./file');
 const axios = require('axios').default;
 
+function sleep (n = 0) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(), n);
+  });
+}
+
+function sleepDays (n = 1) {
+  return sleep(1000 * 60 * 60 * 24);
+}
+
 function escapeRegExp (text = '') {
   return text.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
 }
@@ -50,5 +60,7 @@ module.exports = {
   getUrlOrReadFile,
   renderHbs,
   roundPrice,
+  sleep,
+  sleepDays,
   toHash
 };
