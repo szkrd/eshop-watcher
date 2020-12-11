@@ -1,2 +1,3 @@
+const log = require('./src/utils/log');
 const main = require('./src/main');
-main().catch(err => console.error(err));
+main().catch(err => log.fatal('uncaught fatal error, exiting', err));

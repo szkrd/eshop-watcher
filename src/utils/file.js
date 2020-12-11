@@ -23,6 +23,22 @@ async function keepLastXDirectories (fn = '', num = 9999, filterRex = /.*/) {
   return Promise.all(itemsToDelete.map(name => fs.rm(path.join(fn, name), { recursive: true, force: true })));
 }
 
+async function deleteEmptySubDirs (fn = '') {
+  fn = resolvePath(fn);
+  let items = await fs.readdir(fn, { withFileTypes: true });
+  items = items.filter(ent => ent.isDirectory()).map(ent => ent.name);
+  const collection = await Promise.all(items.map(dir => {
+    const target = path.join(fn, dir);
+    return fs.readdir(target).then(result => ({ target, count: result.length }));
+  }));
+  return Promise.all(collection.filter(item => item.count === 0).map(item => fs.rmdir(item.target)));
+}
+
+async function touch (fn = '') {
+  fn = resolvePath(fn);
+  return fs.writeFile(fn, '');
+}
+
 async function fileExists (fn) {
   try {
     await fs.stat(fn);
@@ -66,9 +82,11 @@ async function readFile (fn = '', parse = true, throwError = false) {
 
 module.exports = {
   absolutePathTo,
+  deleteEmptySubDirs,
   readDir,
   readFile,
   fileExists,
+  touch,
   writeJsonFile,
   writeJsonFileIfNew,
   keepLastXDirectories
