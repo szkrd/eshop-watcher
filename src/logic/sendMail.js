@@ -12,7 +12,8 @@ module.exports = async function sendMail () {
     console.error('can not send mail without an api key');
     return;
   }
-  const html = await readFile('~/dist/index.html');
+  let html = await readFile('~/dist/index.html');
+  html = html.replace(/<!-- SKIP-MAIL-\[ -->[\s\S]*?<!-- ]-SKIP-MAIL -->/mgi, '');
   if (!html) {
     console.error('no html file found');
     return;

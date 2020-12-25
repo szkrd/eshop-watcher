@@ -12,7 +12,7 @@ function sleep (n = 0) {
 }
 
 function sleepDays (n = 1) {
-  return sleep(1000 * 60 * 60 * 24);
+  return sleep(1000 * 60 * 60 * 24 * n);
 }
 
 function escapeRegExp (text = '') {
@@ -45,12 +45,14 @@ async function getUrlOrReadFile (url = '', fn = '') {
 
 const _hbsTemplates = {};
 async function renderHbs (fn = '', data = {}, targetFn = '') {
+  let result = '';
   if (_hbsTemplates[fn]) {
-    return _hbsTemplates[fn](data);
+    result = _hbsTemplates[fn](data);
+  } else {
+    const text = await fs.readFile(fn, 'utf8');
+    const tpl = _hbsTemplates[fn] = Handlebars.compile(text);
+    result = tpl(data);
   }
-  const text = await fs.readFile(fn, 'utf8');
-  const tpl = _hbsTemplates[fn] = Handlebars.compile(text);
-  const result = tpl(data);
   if (!targetFn) return result;
   return fs.writeFile(targetFn, result, 'utf8');
 }

@@ -5,7 +5,13 @@ module.exports = async function buildHtmlTemplate (wishListedItems = [], interes
   const fromHbsFn = absolutePathTo('./templates/index.hbs');
   const toHtmlFn = absolutePathTo('./dist/index.html');
   const notOldInterestingCount = interestingItems.filter(item => !item.old).length;
-  const templateData = { wishListedItems, interestingItems, notOldInterestingCount, runDate: sales.runDate };
+  const templateData = {
+    wishListedItems,
+    interestingItems,
+    notOldInterestingCount,
+    runDate: sales.runDate,
+    runDateExact: (new Date()).toISOString()
+  };
   await writeJsonFileIfNew(`${sales.dbDir}/template-data.json`, templateData);
   if (jsonOutputOnly) {
     console.info('skipped template rendering, saved json only');

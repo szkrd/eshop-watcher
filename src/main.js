@@ -39,6 +39,7 @@ async function run () {
   // let's try to detect relevancy compared to the previous run
   console.info('changes since last time:', changedItems.length);
   templateRendered = await buildHtmlTemplate(wishListedItems, interestingItems, sales, !itemsChangedSinceLastJob);
+  console.info(templateRendered ? 'template rendered' : 'template rendering skipped');
 
   // if we're still around and sales managed to use the dbDir, let's flag it as successful
   if (sales.dbDir && sales.items.length) {

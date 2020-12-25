@@ -87,7 +87,29 @@
     {{/if}}
   </table>
   <footer>
-    rendered on {{runDate}}
+    rendered on <strong>{{runDate}}</strong>
+    <br>
+    ({{runDateExact}})
   </footer>
+  <!-- SKIP-MAIL-[ -->
+  <div class="html-actions">
+    <a href="#" id="js-button-filter-must-buy">only must buys</a>
+  </div>
+  <style type="text/css">
+    .html-actions { display: inline-block; position: fixed; top: 0; right: 0; }
+    .html-actions a { display: inline-block; padding: 2px 4px; background: rgba(0,0,0,.5); margin: 2px; border-radius: 3px; font-size: 11px; color: #ddd; text-decoration: none; border: 1px outset #aaa; line-height: 14px; box-shadow: 2px 2px 3px rgba(0,0,0,0.2); }
+    .html-actions a:hover { color: #fff; box-shadow: 2px 2px 3px rgba(0,0,0,.6); border: 1px inset #aaa; }
+  </style>
+  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+  <script type="text/javascript">
+  $(() => {
+    $('#js-button-filter-must-buy').on('click', (event) => {
+      event.preventDefault();
+      $('td.mustBuyCell').parent().not('.old').addClass('js-must-buy')
+        .parent().find('tr:not(.js-must-buy)').hide()
+    });
+  });
+  </script>
+  <!-- ]-SKIP-MAIL -->
 </body>
 </html>
